@@ -20,14 +20,26 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         CenterCamera();
     }
-
+    
+    enum BiomTypes
+    {
+        FlatBiom = 1,
+        Hill,
+        Mountain,
+        Slump,
+        CactusField,
+        Void,
+        MurkyDesert,
+        Pond,
+        RandomField
+    }
     public Field[][] GenerateMap()
     {
         Field[][] map = new Field[rows][];
-
+        Field[][] subMap = new Field[rows][];
         float offsetX = (cols - 1) * tileSize / 2f;
         float offsetY = (rows - 1) * tileSize / 2f;
-
+        
         for (int i = 0; i < rows; i++)
         {
             map[i] = new Field[cols];
@@ -41,7 +53,10 @@ public class MapGenerator : MonoBehaviour
 
         return map;
     }
+    string SelectTerrainType() {
 
+        return "";
+    }
     private Field CreateRandomField(int i, int j, float offsetX, float offsetY)
     {
         int fieldType = rand.Next(0, 12);
@@ -74,7 +89,6 @@ public class MapGenerator : MonoBehaviour
                      fieldType == 2 ? "rock" :
                      fieldType == 3 ? "water" : "default";
 
-        // ✅ Clean, centered indexing logic:
         int centerRow = rows / 2;
         int centerCol = cols / 2;
 
