@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BiomeGenerator
+public class VoidBiom : IBiomGenerator
 {
     private System.Random rand = new System.Random();
 
@@ -9,16 +9,18 @@ public class BiomeGenerator
     private int cols;
     private float tileSize;
     private Transform mapParent;
+    int voidLevel;
 
-    public BiomeGenerator(int rows, int cols, float tileSize, Transform mapParent)
+    public VoidBiom(int rows, int cols, float tileSize, Transform mapParent, int voidLevel)
     {
         this.rows = rows;
         this.cols = cols;
         this.tileSize = tileSize;
         this.mapParent = mapParent;
+        this.voidLevel = voidLevel;
     }
 
-    public Field[][] GenerateBiome(int voidLevel)
+    public Field[][] GenerateBiom()
     {
         Field[][] biomeFields = new Field[rows][];
 
@@ -53,12 +55,12 @@ public class BiomeGenerator
 
         if (isVoid)
         {
-            fieldType = 6;
+            fieldType = 5;
         }
         else
         {
-            fieldType = rand.Next(0, 12);
-            if (fieldType == 6)
+            fieldType = rand.Next(0, 6);
+            if (fieldType == 5)
                 fieldType = 0; 
         }
 
@@ -72,31 +74,22 @@ public class BiomeGenerator
         Field field = fieldType switch
         {
             0 => fieldObj.AddComponent<BaseTerrain>(),
-            1 => fieldObj.AddComponent<Boots>(),
-            2 => fieldObj.AddComponent<Rock>(),
-            3 => fieldObj.AddComponent<Water>(),
-            4 => fieldObj.AddComponent<Cactus>(),
-            5 => fieldObj.AddComponent<SilverBullet>(),
-            6 => fieldObj.AddComponent<EmptyField>(),
-            7 => fieldObj.AddComponent<Gold>(),
-            8 => fieldObj.AddComponent<QuickSand>(),
-            9 => fieldObj.AddComponent<TownHall>(),
-            10 => fieldObj.AddComponent<Whiskey>(),
+            1 => fieldObj.AddComponent<Rock>(),
+            2 => fieldObj.AddComponent<Water>(),
+            3 => fieldObj.AddComponent<Cactus>(),
+            4 => fieldObj.AddComponent<QuickSand>(),
+            5 => fieldObj.AddComponent<EmptyField>(),
             _ => fieldObj.AddComponent<BaseTerrain>(),
         };
 
         field.Type = fieldType switch
         {
-            1 => "boots",
-            2 => "rock",
-            3 => "water",
-            4 => "cactus",
-            5 => "silverBullet",
-            6 => "emptyField",
-            7 => "gold",
-            8 => "quickSand",
-            9 => "townHall",
-            10 => "whiskey",
+            0 => "baseTerrain",
+            1 => "rock",
+            2 => "water",
+            3 => "cactus",
+            4 => "quickSand",
+            5 => "emptyField",
             _ => "baseTerrain"
         };
 
@@ -104,9 +97,14 @@ public class BiomeGenerator
         int centerCol = cols / 2;
 
         field.XIndex = (j - centerCol) * 16;
-        field.YIndex = (centerRow - i) * 16; // flipped Y so top = max index
+        field.YIndex = (centerRow - i) * 16;
         field.ZIndex = 0;
 
         return field;
+    }
+
+    //implement later
+    public bool ValidateStructure(Field[][] structure) { 
+        return true;
     }
 }

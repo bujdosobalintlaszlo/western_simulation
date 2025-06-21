@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IBiomGenerator
 {
     bool ValidateStructure(Field[][] structure);
-    Field[][] GenerateStructure();   
+    Field[][] GenerateBiom();   
 }
