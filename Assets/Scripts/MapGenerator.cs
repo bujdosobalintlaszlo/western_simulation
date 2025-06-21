@@ -94,7 +94,7 @@ public class MapGenerator : MonoBehaviour
 
         field.XIndex = (j - centerCol) * 16;
         field.YIndex = (centerRow - i) * 16; // flipped Y so top = max index
-        field.ZIndex = 0;
+        field.ZIndex = rand.Next(0,5);
 
         return field;
     }

@@ -12,7 +12,7 @@ public class PondBiom : IBiomGenerator
     private Transform mapParent;
     int voidLevel;
 
-    public VoidBiom(int rows, int cols, float tileSize, Transform mapParent, int voidLevel)
+    public PondBiom(int rows, int cols, float tileSize, Transform mapParent, int voidLevel)
     {
         this.rows = rows;
         this.cols = cols;

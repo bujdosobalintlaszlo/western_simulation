@@ -34,12 +34,20 @@ public class BaseTerrain : Field
         imageGO.transform.SetParent(panel.transform, false);
 
         Image img = imageGO.AddComponent<Image>();
-        Sprite sprite = Resources.Load<Sprite>("baseTerrain1");
-
-        if (sprite == null)
-        {
-            Debug.LogError("Sprite not found in Resources!");
-            return;
+        Sprite sprite = null;
+        if (ZIndex == 0) {
+            sprite = Resources.Load<Sprite>("baseTerrain1");
+        } else if (ZIndex == 1) {
+            sprite = Resources.Load<Sprite>("baseTerrain2");
+        } else if (ZIndex == 2) {
+            sprite = Resources.Load<Sprite>("baseTerrain3");
+        } else if (ZIndex == 3) {
+            sprite = Resources.Load<Sprite>("baseTerrain4");
+        } else if (ZIndex == 4) {
+            sprite = Resources.Load<Sprite>("baseTerrain5");
+        }
+        else {
+            Debug.Log("Unexpected error in BaseTerrain");
         }
 
         img.sprite = sprite;

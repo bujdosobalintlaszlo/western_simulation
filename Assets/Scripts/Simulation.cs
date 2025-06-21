@@ -19,7 +19,7 @@ public class Simulation : MonoBehaviour
         Field[][] voidPiece = voidBiom.GenerateBiom();
         Field[][] intPiece = slmb.GenerateBiom();
         Debug.Log("RUN");
-        /*
+        
         for (int i = 0; i < map.Length; i++)
         {
             for (int j = 0; j < map[i].Length; j++)
@@ -30,8 +30,8 @@ public class Simulation : MonoBehaviour
                     Debug.LogWarning($"Field at {i},{j} is null");
             }
         }
-        */
         
+        /*
         for (int i = 0; i < intPiece.Length; i++)
         {
             for (int j = 0; j < intPiece[i].Length; j++)
@@ -42,6 +42,7 @@ public class Simulation : MonoBehaviour
                     Debug.LogWarning($"Field at {i},{j} is null");
             }
         }
+        */
     }
 
 
