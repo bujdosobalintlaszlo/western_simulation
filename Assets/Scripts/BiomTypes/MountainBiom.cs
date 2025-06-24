@@ -12,12 +12,9 @@ public class MountainBiom : Biom, IBiomGenerator
     Transform mapParent;
     float tileSize;
 
-    public MountainBiom(int rows, int cols,float tileSize,Transform mapParent)
+    public MountainBiom(int rows, int cols, float tileSize, Transform mapParent) : base(rows, cols, tileSize, mapParent)
     {
-        this.rows = rows;
-        this.cols = cols;
-        this.mapParent = mapParent;
-        this.tileSize = tileSize;
+        
     }
 
     public int[,] GenerateMountainMap()
