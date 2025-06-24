@@ -14,6 +14,8 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
 
     public MurkyDesertBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel) : base(rows, cols, tileSize, mapParent)
     {
+        this.rows = rows;
+        this.cols = cols;
         this.slumpLevel = slumpLevel;
     }
 

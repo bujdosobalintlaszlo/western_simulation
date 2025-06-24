@@ -10,22 +10,20 @@ public class PondBiom : Biom, IBiomGenerator
     private int cols;
     private float tileSize;
     private Transform mapParent;
-    int voidLevel;
+    int slumpLevel;
 
-    public PondBiom(int rows, int cols, float tileSize, Transform mapParent, int voidLevel)
+    public PondBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel) : base(rows, cols, tileSize, mapParent)
     {
         this.rows = rows;
         this.cols = cols;
-        this.tileSize = tileSize;
-        this.mapParent = mapParent;
-        this.voidLevel = voidLevel;
+        this.slumpLevel = slumpLevel;
     }
 
     public Field[][] GenerateBiom()
     {
         Field[][] biomeFields = new Field[rows][];
 
-        float voidProbability = voidLevel switch
+        float voidProbability = slumpLevel switch
         {
             3 => 1f,
             2 => 0.5f,

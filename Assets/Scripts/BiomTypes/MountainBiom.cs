@@ -14,7 +14,8 @@ public class MountainBiom : Biom, IBiomGenerator
 
     public MountainBiom(int rows, int cols, float tileSize, Transform mapParent) : base(rows, cols, tileSize, mapParent)
     {
-        
+        this.rows = rows;
+        this.cols = cols;
     }
 
     public int[,] GenerateMountainMap()

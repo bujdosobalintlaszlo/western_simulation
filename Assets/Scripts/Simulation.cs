@@ -13,26 +13,21 @@ public class Simulation : MonoBehaviour
             Debug.LogError("MapGenerator component not found in scene!");
             return;
         }
-        VoidBiom voidBiom = new VoidBiom(5,5,16,mapParent,3);
-        SlumpBiom slmb = new SlumpBiom(31, 15, 16, mapParent, 2);
-        MountainBiom mb  = new MountainBiom(5,5,16,mapParent);
         Field[][] map = mpgen.GenerateMap();
-        Field[][] voidPiece = voidBiom.GenerateBiom();
-        Field[][] intPiece = slmb.GenerateBiom();
-        Field[][] intPiece2 = mb.GenerateBiom();
-        Debug.Log("RUN");
-        
-        for (int i = 0; i < intPiece2.Length; i++)
+
+       // Debug.Log($"Generated map size: {map.Length} rows × {map[0].Length} cols");
+
+        for (int i = 0; i < map.Length; i++)
         {
-            for (int j = 0; j < intPiece2[i].Length; j++)
+            for (int j = 0; j < map[i].Length; j++)
             {
-                if (intPiece2[i][j] != null)
-                    intPiece2[i][j].DisplayField();
+                if (map[i][j] != null)
+                    map[i][j].DisplayField();
                 else
-                    Debug.LogWarning($"Field at {i},{j} is null");
+                    Debug.LogWarning($"Null at {i},{j}");
             }
         }
-        
+
     }
 
 
