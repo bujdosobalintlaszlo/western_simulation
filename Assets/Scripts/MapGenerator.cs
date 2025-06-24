@@ -21,7 +21,13 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         CenterCamera();
     }
-
+    /*
+        Map gen stat for tomorrow:
+        Gotta fit chunks in map so it wont overflow width vise or height vise.
+        Merge is like list.forEach and each matrix will be fitted in map. 
+        Then it wokrs :)
+        Might do it today
+     */
     public Field[][] GenerateMap()
     {
         List<Field[][]> biomChunks = new List<Field[][]>();
@@ -49,6 +55,7 @@ public class MapGenerator : MonoBehaviour
     private Field[][] MergeBiomChunks(List<Field[][]> chunks)
     {
       
+        
         return chunks[0];
     }
 
