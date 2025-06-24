@@ -12,12 +12,9 @@ public class FlatBiom : Biom, IBiomGenerator
     private Transform mapParent;
     int slumpLevel;
 
-    public FlatBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel)
+
+    public FlatBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel) : base(rows, cols, tileSize, mapParent)
     {
-        this.rows = rows;
-        this.cols = cols;
-        this.tileSize = tileSize;
-        this.mapParent = mapParent;
         this.slumpLevel = slumpLevel;
     }
 

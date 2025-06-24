@@ -55,17 +55,19 @@ public class MapGenerator : MonoBehaviour
         float posX = j * tileSize - offsetX;
         float posY = -(i * tileSize - offsetY);
         fieldObj.transform.position = new Vector3(posX, posY, 0);
-        
-        Field[][] biom = biomType switch
+
+            FlatBiom fn = new FlatBiom(rand.Next(5, maxBiomHeight), rand.Next(5, maxBiomWidth), 16, mapParent, rand.Next(0, 4))
+            Field[][] bm = fn.GenerateBiom();
+        Biom[][] biom = biomType switch
         {
-            0 => new FlatBiom(rand.Next(5,maxBiomHeight), rand.Next(5, maxBiomWidth),16,mapParent,rand.Next(0,4)),
+            0 =>
             1 => fieldObj.AddComponent<Boots>(),
             2 => fieldObj.AddComponent<Rock>(),
             3 => fieldObj.AddComponent<Water>(),
             4 => fieldObj.AddComponent<Cactus>(),
             5 => fieldObj.AddComponent<SilverBullet>(),
             6 => fieldObj.AddComponent<EmptyField>(),
-            7 => fieldObj.AddComponent<Gold>(),            
+            7 => fieldObj.AddComponent<Gold>(),
             _ => fieldObj.AddComponent<BaseTerrain>(),
         };
 

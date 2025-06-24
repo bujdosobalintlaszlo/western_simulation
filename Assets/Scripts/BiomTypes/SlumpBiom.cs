@@ -12,16 +12,9 @@ public class SlumpBiom : Biom, IBiomGenerator
     private float tileSize;
     private Transform mapParent;
     int slumpLevel;
-
-    public SlumpBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel)
-    {
-        this.rows = rows;
-        this.cols = cols;
-        this.tileSize = tileSize;
-        this.mapParent = mapParent;
+    public SlumpBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel) : base(rows, cols, tileSize, mapParent) { 
         this.slumpLevel = slumpLevel;
     }
-
     public Field[][] GenerateBiom()
     {
         Field[][] biomeFields = new Field[rows][];
