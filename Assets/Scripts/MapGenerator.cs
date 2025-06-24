@@ -9,9 +9,9 @@ public class MapGenerator : MonoBehaviour
 
     private System.Random rand = new System.Random();
 
-    public int rows = 10;
+    public int rows = 55;
 
-    public int cols = 10;
+    public int cols = 110;
 
     public float tileSize = 1f;
 
@@ -21,18 +21,6 @@ public class MapGenerator : MonoBehaviour
         CenterCamera();
     }
     
-    enum BiomTypes
-    {
-        FlatBiom = 1,
-        Hill,
-        Mountain,
-        Slump,
-        CactusField,
-        Void,
-        MurkyDesert,
-        Pond,
-        RandomField
-    }
     public Field[][] GenerateMap()
     {
         Field[][] map = new Field[rows][];
@@ -59,29 +47,25 @@ public class MapGenerator : MonoBehaviour
     }
     private Field CreateRandomField(int i, int j, float offsetX, float offsetY)
     {
-        int fieldType = rand.Next(0, 12);
+        int biomType = rand.Next(0, 8);
         GameObject fieldObj = new GameObject($"Field_{i}_{j}");
         fieldObj.transform.SetParent(mapParent, false);
-
-        // Correct tile positioning in world space
+        int maxBiomHeight = (int)Math.Round(Math.Sqrt(rows), 0);
+        int maxBiomWidth = (int)Math.Round(Math.Sqrt(cols), 0);
         float posX = j * tileSize - offsetX;
         float posY = -(i * tileSize - offsetY);
         fieldObj.transform.position = new Vector3(posX, posY, 0);
-
-        // Add and configure correct field component
-        Field field = fieldType switch
+        
+        Field[][] biom = biomType switch
         {
-            0 => fieldObj.AddComponent<BaseTerrain>(),
+            0 => new FlatBiom(rand.Next(5,maxBiomHeight), rand.Next(5, maxBiomWidth),16,mapParent,rand.Next(0,4)),
             1 => fieldObj.AddComponent<Boots>(),
             2 => fieldObj.AddComponent<Rock>(),
             3 => fieldObj.AddComponent<Water>(),
             4 => fieldObj.AddComponent<Cactus>(),
             5 => fieldObj.AddComponent<SilverBullet>(),
             6 => fieldObj.AddComponent<EmptyField>(),
-            7 => fieldObj.AddComponent<Gold>(),
-            8 => fieldObj.AddComponent<QuickSand>(),
-            9 => fieldObj.AddComponent<TownHall>(),
-            10 => fieldObj.AddComponent<Whiskey>(),
+            7 => fieldObj.AddComponent<Gold>(),            
             _ => fieldObj.AddComponent<BaseTerrain>(),
         };
 

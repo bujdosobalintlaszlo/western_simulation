@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CaosBiom : MonoBehaviour
+public class CaosBiom : Biom, IBiomGenerator
 {
     private System.Random rand = new System.Random();
 

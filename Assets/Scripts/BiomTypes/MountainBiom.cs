@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MountainBiom : IBiomGenerator
+public class MountainBiom : Biom, IBiomGenerator
 {
     private int rows;
     private int cols;
@@ -24,8 +24,7 @@ public class MountainBiom : IBiomGenerator
     {
         int[,] map = FillEmptyMap();
 
-        // Add multiple peaks
-        int numberOfPeaks = 100;
+        int numberOfPeaks = (int)Math.Round((decimal)(rows+cols)/2,0);
         List<(int x, int y)> peaks = new List<(int, int)>();
 
         for (int i = 0; i < numberOfPeaks; i++)

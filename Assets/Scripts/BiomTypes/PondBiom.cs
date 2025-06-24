@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PondBiom : IBiomGenerator
+public class PondBiom : Biom, IBiomGenerator
 {
     private System.Random rand = new System.Random();
 

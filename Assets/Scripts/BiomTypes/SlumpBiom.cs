@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //FIX NEEDED
-public class SlumpBiom : IBiomGenerator
+public class SlumpBiom : Biom, IBiomGenerator
 {
     private System.Random rand = new System.Random();
 
