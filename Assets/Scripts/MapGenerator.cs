@@ -9,10 +9,11 @@ public class MapGenerator : MonoBehaviour
 
     private System.Random rand = new System.Random();
 
-    public int rows = 55;
+    public static int rows = 55;
+    public static int cols = 110;
 
-    public int cols = 110;
-
+    int remainingRows = rows;
+    int remainingCols = cols;
     public float tileSize = 1f;
 
     void Start()
@@ -23,21 +24,21 @@ public class MapGenerator : MonoBehaviour
     
     public Field[][] GenerateMap()
     {
-        Field[][] map = new Field[rows][];
-        Field[][] subMap = new Field[rows][];
-        float offsetX = (cols - 1) * tileSize / 2f;
-        float offsetY = (rows - 1) * tileSize / 2f;
         
-        for (int i = 0; i < rows; i++)
-        {
-            map[i] = new Field[cols];
-
-            for (int j = 0; j < cols; j++)
-            {
-                Field[][] biomChunk = CreateRandomField(i, j, offsetX, offsetY);
-                map[i][j] = field;
-            }
+        List<Field[][]> biomChunks = new List<Field[][]>();
+        int maxBiomHeight = (int)Math.Round(Math.Sqrt(rows), 0);
+        int maxBiomWidth = (int)Math.Round(Math.Sqrt(cols), 0);
+        while (remainingRows > 0 && remainingCols > 0) { 
+            int biomType = rand.Next(0, 7);
+            Field[][] biomChunk = CreateRandomField(biomType, maxBiomHeight, maxBiomWidth);
+            biomChunks.Add(biomChunk);
         }
+        return MergeBiomChunks();
+    }
+
+    Field[][] MergeBiomChunks()
+    {
+        Field[][] map = new Field[rows][];
 
         return map;
     }
@@ -45,16 +46,8 @@ public class MapGenerator : MonoBehaviour
 
         return "";
     }
-    private Field[][] CreateRandomField(int i, int j, float offsetX, float offsetY)
+    private Field[][] CreateRandomField(int biomType, int maxBiomHeight,int maxBiomWidth)
     {
-        int biomType = rand.Next(0, 7);
-        GameObject fieldObj = new GameObject($"Field_{i}_{j}");
-        fieldObj.transform.SetParent(mapParent, false);
-        int maxBiomHeight = (int)Math.Round(Math.Sqrt(rows), 0);
-        int maxBiomWidth = (int)Math.Round(Math.Sqrt(cols), 0);
-        float posX = j * tileSize - offsetX;
-        float posY = -(i * tileSize - offsetY);
-        fieldObj.transform.position = new Vector3(posX, posY, 0);
         Field[][] biomChunk = null;
         int height = rand.Next(5, maxBiomHeight);
         int width = rand.Next(5,maxBiomWidth);
@@ -97,8 +90,8 @@ public class MapGenerator : MonoBehaviour
             Debug.Log("Faulty biom");
             return new Field[0][];
         }
-        rows -= height;
-        cols -= width;
+        remainingRows -= height;
+        remainingCols -= width;
         return biomChunk;
     }
 
