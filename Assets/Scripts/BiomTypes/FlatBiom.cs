@@ -59,7 +59,7 @@ public class FlatBiom : Biom, IBiomGenerator
         }
         else
         {
-            fieldType = rand.Next(0, 6);
+            fieldType = rand.Next(0, 4);
             if (fieldType == 5)
                 fieldType = 0;
         }
@@ -77,8 +77,6 @@ public class FlatBiom : Biom, IBiomGenerator
             1 => fieldObj.AddComponent<Rock>(),
             2 => fieldObj.AddComponent<Water>(),
             3 => fieldObj.AddComponent<Cactus>(),
-            4 => fieldObj.AddComponent<EmptyField>(),
-            5 => fieldObj.AddComponent<QuickSand>(),
             _ => fieldObj.AddComponent<BaseTerrain>(),
         };
 
