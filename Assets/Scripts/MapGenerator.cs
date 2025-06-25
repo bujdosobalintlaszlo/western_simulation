@@ -21,20 +21,17 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         CenterCamera();
     }
-    /*
-        Map gen stat for tomorrow:
-        Gotta fit chunks in map so it wont overflow width vise or height vise.
-        Merge is like list.forEach and each matrix will be fitted in map. 
-        Then it wokrs :)
-        Might do it today
-     */
+
     public Field[][] GenerateMap()
     {
+        /*
         List<Field[][]> biomChunks = new List<Field[][]>();
         int remainingRows = rows;
         int remainingCols = cols;
         int maxBiomHeight = (int)Math.Round(Math.Sqrt(rows));
         int maxBiomWidth = (int)Math.Round(Math.Sqrt(cols));
+
+        int[] takenFields = new int[maxBiomHeight];
 
         for (int y = 0; y < rows; y += maxBiomHeight)
         {
@@ -50,13 +47,26 @@ public class MapGenerator : MonoBehaviour
         }
 
         return MergeBiomChunks(biomChunks);
+        */
     }
 
     private Field[][] MergeBiomChunks(List<Field[][]> chunks)
     {
-      
+        /*
+        Field[][] map = new Field[rows][];
+        int mapI = 0;
+        chunks.ForEach(chunkset =>
+        {
+            for (int i = 0; i < chunkset.Length; ++i) {
+                for (int j = 0; j < chunkset[i].Length; ++j)
+                {
+                    chunkset[i][j] = null;
+                }
+            }
+        });
         
         return chunks[0];
+        */
     }
 
 
