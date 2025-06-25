@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class VoidBiom : IBiomGenerator
@@ -101,6 +102,68 @@ public class VoidBiom : IBiomGenerator
         field.ZIndex = 0;
 
         return field;
+    }
+
+
+    public Field[][] CircularVoid()
+    {
+        Field[][] fields = new Field[rows][];
+
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        float centerRow = rows / 2f;
+        float centerCol = cols / 2f;
+        float radius = Math.Min(rows, cols) / 3f;
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] line = new Field[cols];
+
+            for (int j = 0; j < cols; ++j)
+            {
+                float dist = MathF.Sqrt((i - centerRow) * (i - centerRow) + (j - centerCol) * (j - centerCol));
+
+                bool isVoid = dist <= radius;
+
+                line[j] = CreateField(i, j, offsetX, offsetY, isVoid);
+            }
+
+            fields[i] = line;
+        }
+
+        return fields;
+    }
+
+    public Field[] HalfCircleVoid() {
+        if (rows % 2 == 0)
+        {
+
+        }
+        else { 
+            
+        }
+    }
+
+    public Field[][] RectengularVoid() { 
+    
+    }
+
+    public Field[][] FullVoid() { 
+    
+    }
+
+
+    public Field[][] RandomizedVoid() { 
+    
+    }
+
+    public Field[][] SmileVoid() 
+    { 
+    
+    }
+    public Field[][] MiniVoid() { 
+    
     }
 
     //implement later

@@ -88,7 +88,7 @@ public class MapGenerator : MonoBehaviour
                 f = new MountainBiom(height, width, 16, mapParent).GenerateBiom();
                 break;
             case 5:
-                f = new CaosBiom(height, width, 16, mapParent, rand.Next(0, 4)).GenerateBiom();
+                f = new VoidBiom(height, width, 16, mapParent, rand.Next(0, 4)).CircularVoid();
                 break;
             case 6:
                 f = new PondBiom(height, width, 16, mapParent, rand.Next(0, 4)).GenerateBiom();

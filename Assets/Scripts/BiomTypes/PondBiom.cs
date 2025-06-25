@@ -54,7 +54,7 @@ public class PondBiom : Biom, IBiomGenerator
 
         if (isVoid)
         {
-            fieldType = 5;
+            fieldType = 2;
         }
         else
         {
