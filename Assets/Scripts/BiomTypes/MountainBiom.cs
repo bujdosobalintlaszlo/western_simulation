@@ -21,17 +21,22 @@ public class MountainBiom : Biom, IBiomGenerator
     public int[,] GenerateMountainMap()
     {
         int[,] map = FillEmptyMap();
-
-        int numberOfPeaks = (int)Math.Round((decimal)(rows+cols)/2,0);
+        int numberOfPeaks = (int)Math.Round((decimal)(rows + cols) / 2, 0);
         List<(int x, int y)> peaks = new List<(int, int)>();
 
         for (int i = 0; i < numberOfPeaks; i++)
         {
+            // Prevent invalid ranges for small maps
+            if (rows <= 4 || cols <= 4)
+                break;
+
             int px = rand.Next(2, rows - 2);
             int py = rand.Next(2, cols - 2);
+
             peaks.Add((px, py));
             map[px, py] = maxHeight;
         }
+
 
         Queue<(int x, int y)> queue = new Queue<(int x, int y)>();
         foreach (var (x, y) in peaks)
