@@ -24,7 +24,7 @@ public class VoidBiom : IBiomGenerator
     public Field[][] GenerateBiom()
     {
         Field[][] biomeFields = new Field[rows][];
-
+        int voidType = rand.Next(1, 100);
         float voidProbability = voidLevel switch
         {
             3 => 1f,
@@ -35,18 +35,34 @@ public class VoidBiom : IBiomGenerator
 
         float offsetX = (cols * tileSize) / 2f;
         float offsetY = (rows * tileSize) / 2f;
-
-        for (int i = 0; i < rows; i++)
+        if (voidLevel == 1)
         {
-            biomeFields[i] = new Field[cols];
-
-            for (int j = 0; j < cols; j++)
-            {
-                bool isVoid = rand.NextDouble() < voidProbability;
-                biomeFields[i][j] = CreateField(i, j, offsetX, offsetY, isVoid);
-            }
+            return SmileVoid();
         }
-
+        else if (voidLevel > 1 && voidLevel < 41)
+        {
+            return MiniVoid();
+        }
+        else if (voidLevel > 40 && voidLevel < 61)
+        {
+            return CircularVoid();
+        }
+        else if (voidLevel > 60 && voidLevel < 71)
+        {
+            return RandomVoid();
+        }
+        else if (voidLevel > 70 && voidLevel < 86)
+        {
+            return RectengularVoid();
+        }
+        else if (voidLevel > 85 && voidLevel < 96)
+        {
+            return HalfCircleVoid();
+        }
+        else { 
+            return FullVoid();
+        }
+        
         return biomeFields;
     }
 
@@ -159,13 +175,42 @@ public class VoidBiom : IBiomGenerator
     }
 
     public Field[][] SmileVoid() 
-    { 
-    
+    {
+        if (rows != cols) { 
+            return CircularVoid();
+        }
+
+        if (rows >= 8 && cols >= 8) { 
+            
+        }
     }
     public Field[][] MiniVoid() { 
     
     }
+    public Field[][] RandomVoid() {
+        float voidProbability = voidLevel switch
+        {
+            3 => 1f,
+            2 => 0.5f,
+            1 => 0.25f,
+            _ => 0f
+        };
 
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+        Field[][] biomeFields = new Field[rows][];
+        for (int i = 0; i < rows; i++)
+        {
+            biomeFields[i] = new Field[cols];
+
+            for (int j = 0; j < cols; j++)
+            {
+                bool isVoid = rand.NextDouble() < voidProbability;
+                biomeFields[i][j] = CreateField(i, j, offsetX, offsetY, isVoid);
+            }
+        }
+        return biomeFields;
+    }
     //implement later
     public bool ValidateStructure(Field[][] structure) { 
         return true;
