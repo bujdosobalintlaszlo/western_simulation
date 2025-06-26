@@ -39,12 +39,12 @@ public class VoidBiom : IBiomGenerator
         {
             return RectengularVoid();
         }
-        else if (voidLevel > 85 && voidLevel < 96)
+        else
         {
-            return HalfCircleVoid();
-        }
-        else { 
-            return FullVoid();
+            if (UnityEngine.Random.value < 0.01f)
+                return FullVoid();
+            else
+                return HalfCircleVoid();
         }
     }
 

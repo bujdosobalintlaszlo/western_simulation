@@ -44,7 +44,10 @@ public class PondBiom : Biom, IBiomGenerator
         }
         else
         {
-            return FullPond();
+            if (UnityEngine.Random.value < 0.01f)
+                return FullPond();
+            else
+                return HalfCirclePond();
         }
     }
 

@@ -38,13 +38,12 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
         {
             return MurkyLinearDangerField();
         }
-        else if (dangerLevel > 85 && dangerLevel < 96)
+         else
         {
-            return MurkyCrescentTrap();
-        }
-        else
-        {
-            return MurkyOverwhelmedZone();
+            if (UnityEngine.Random.value < 0.01f)
+                return MurkyOverwhelmedZone();
+            else
+                return MurkyCrescentTrap();
         }
     }
 

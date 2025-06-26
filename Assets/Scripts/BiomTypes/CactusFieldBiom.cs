@@ -38,14 +38,6 @@ public class CactusFieldBiom : Biom,IBiomGenerator
         {
             return RectengularCactusField();
         }
-        else if (spikeLevel > 85 && spikeLevel < 99)
-        {
-            return HalfCircleCactusField();
-        }
-        else if (spikeLevel == 100)
-        {
-            return FullCactusField();
-        }
         else
         {
             if (UnityEngine.Random.value < 0.01f)
