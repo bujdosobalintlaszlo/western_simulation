@@ -161,9 +161,54 @@ public class VoidBiom : IBiomGenerator
         }
     }
 
-    public Field[][] RectengularVoid() { 
-        
+    public Field[][] RectengularVoid()
+    {
+        Field[][] map = new Field[rows][];
+        int voidStartIndex;
+        int voidEndIndex;
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        if (rows % 2 == 0)
+        {
+            voidStartIndex = (int)Math.Floor((decimal)(cols / 2));
+            voidEndIndex = (int)Math.Ceiling((decimal)(cols / 2));
+
+            for (int i = 0; i < rows; ++i)
+            {
+                Field[] line = new Field[cols];
+                for (int j = 0; j < cols; ++j)
+                {
+                    bool isVoid = j >= voidStartIndex && j <= voidEndIndex;
+                    line[j] = CreateField(i, j, offsetX, offsetY, isVoid);
+                }
+                --voidStartIndex;
+                ++voidEndIndex;
+                map[i] = line;
+            }
+        }
+        else
+        {
+            voidStartIndex = (int)Math.Floor((decimal)(cols / 2));
+            voidEndIndex = voidStartIndex;
+
+            for (int i = 0; i < rows; ++i)
+            {
+                Field[] line = new Field[cols];
+                for (int j = 0; j < cols; ++j)
+                {
+                    bool isVoid = j >= voidStartIndex && j <= voidEndIndex;
+                    line[j] = CreateField(i, j, offsetX, offsetY, isVoid);
+                }
+                --voidStartIndex;
+                ++voidEndIndex;
+                map[i] = line;
+            }
+        }
+
+        return map;
     }
+
 
     public Field[][] FullVoid()
     {
