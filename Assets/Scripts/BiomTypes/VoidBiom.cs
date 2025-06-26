@@ -35,11 +35,7 @@ public class VoidBiom : IBiomGenerator
 
         float offsetX = (cols * tileSize) / 2f;
         float offsetY = (rows * tileSize) / 2f;
-        if (voidLevel == 1)
-        {
-            return SmileVoid();
-        }
-        else if (voidLevel > 1 && voidLevel < 41)
+        if (voidLevel > 0 && voidLevel < 41)
         {
             return MiniVoid();
         }
@@ -62,8 +58,6 @@ public class VoidBiom : IBiomGenerator
         else { 
             return FullVoid();
         }
-        
-        return biomeFields;
     }
 
     private Field CreateField(int i, int j, float offsetX, float offsetY, bool isVoid)
@@ -151,15 +145,32 @@ public class VoidBiom : IBiomGenerator
         return fields;
     }
 
-    public Field[][] HalfCircleVoid() {
-        if (rows % 2 == 0)
-        {
+    public Field[][] HalfCircleVoid()
+    {
+        Field[][] map = new Field[rows][];
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
 
+        int voidStartIndex = (int)Math.Floor((decimal)(cols / 2));
+        int voidEndIndex = (int)Math.Ceiling((decimal)(cols / 2));
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] line = new Field[cols];
+            for (int j = 0; j < cols; ++j)
+            {
+                bool isVoid = j == voidStartIndex || j == voidEndIndex;
+                line[j] = CreateField(i, j, offsetX, offsetY, isVoid);
+            }
+
+            --voidStartIndex;
+            ++voidEndIndex;
+            map[i] = line;
         }
-        else { 
-            
-        }
+
+        return map;
     }
+
 
     public Field[][] RectengularVoid()
     {
@@ -224,16 +235,6 @@ public class VoidBiom : IBiomGenerator
         return map;
     }
 
-    public Field[][] SmileVoid() 
-    {
-        if (rows != cols) { 
-            return CircularVoid();
-        }
-
-        if (rows >= 8 && cols >= 8) { 
-            
-        }
-    }
     public Field[][] MiniVoid()
     {
         Field[][] map = new Field[rows][];
