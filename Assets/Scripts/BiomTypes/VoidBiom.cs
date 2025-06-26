@@ -23,7 +23,7 @@ public class VoidBiom : IBiomGenerator
 
     public Field[][] GenerateBiom()
     {
-        if (voidLevel > 0 && voidLevel < 100)
+        if (voidLevel > 0 && voidLevel < 41)
         {
             return MiniVoid();
         }
@@ -214,14 +214,20 @@ public class VoidBiom : IBiomGenerator
         Field[][] map = new Field[rows][];
         float offsetX = (cols * tileSize) / 2f;
         float offsetY = (rows * tileSize) / 2f;
-        for (int i = 0; i < rows; ++i) {
+
+        for (int i = 0; i < rows; ++i)
+        {
             Field[] fields = new Field[cols];
-            for (int j = 0; ++j < cols; ++j) {
-                fields[j] = CreateField(i,j,offsetX,offsetY,true);
+            for (int j = 0; j < cols; ++j)
+            {
+                fields[j] = CreateField(i, j, offsetX, offsetY, true);
             }
+            map[i] = fields;
         }
+
         return map;
     }
+
 
     public Field[][] MiniVoid()
     {
