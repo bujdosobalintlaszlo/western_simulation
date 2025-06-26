@@ -23,19 +23,7 @@ public class VoidBiom : IBiomGenerator
 
     public Field[][] GenerateBiom()
     {
-        Field[][] biomeFields = new Field[rows][];
-        int voidType = rand.Next(1, 100);
-        float voidProbability = voidLevel switch
-        {
-            3 => 1f,
-            2 => 0.5f,
-            1 => 0.25f,
-            _ => 0f
-        };
-
-        float offsetX = (cols * tileSize) / 2f;
-        float offsetY = (rows * tileSize) / 2f;
-        if (voidLevel > 0 && voidLevel < 41)
+        if (voidLevel > 0 && voidLevel < 100)
         {
             return MiniVoid();
         }
