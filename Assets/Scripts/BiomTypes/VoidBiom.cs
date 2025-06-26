@@ -224,11 +224,6 @@ public class VoidBiom : IBiomGenerator
         return map;
     }
 
-
-    public Field[][] RandomizedVoid() { 
-    
-    }
-
     public Field[][] SmileVoid() 
     {
         if (rows != cols) { 
@@ -239,9 +234,32 @@ public class VoidBiom : IBiomGenerator
             
         }
     }
-    public Field[][] MiniVoid() { 
-    
+    public Field[][] MiniVoid()
+    {
+        Field[][] map = new Field[rows][];
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        int voidRow = rand.Next(1, rows - 1);
+        int voidCol = rand.Next(1, cols - 1);
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] fields = new Field[cols];
+            for (int j = 0; j < cols; ++j)
+            {
+                bool isVoid =
+                    Math.Abs(i - voidRow) <= 1 &&
+                    Math.Abs(j - voidCol) <= 1;
+
+                fields[j] = CreateField(i, j, offsetX, offsetY, isVoid);
+            }
+            map[i] = fields;
+        }
+
+        return map;
     }
+
     public Field[][] RandomVoid() {
         float voidProbability = voidLevel switch
         {
