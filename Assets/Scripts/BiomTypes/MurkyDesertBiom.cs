@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,56 +11,55 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
     private int cols;
     private float tileSize;
     private Transform mapParent;
-    int slumpLevel;
+    int dangerLevel;
 
-    public MurkyDesertBiom(int rows, int cols, float tileSize, Transform mapParent, int slumpLevel) : base(rows, cols, tileSize, mapParent)
+    public MurkyDesertBiom(int rows, int cols, float tileSize, Transform mapParent, int dangerLevel) : base(rows, cols, tileSize, mapParent)
     {
         this.rows = rows;
         this.cols = cols;
-        this.slumpLevel = slumpLevel;
+        this.dangerLevel = dangerLevel;
     }
 
     public Field[][] GenerateBiom()
     {
-        Field[][] biomeFields = new Field[rows][];
-
-        float voidProbability = slumpLevel switch
+        if (dangerLevel > 0 && dangerLevel < 100)
         {
-            3 => 1f,
-            2 => 0.5f,
-            1 => 0.25f,
-            _ => 0f
-        };
-
-        float offsetX = (cols * tileSize) / 2f;
-        float offsetY = (rows * tileSize) / 2f;
-
-        for (int i = 0; i < rows; i++)
-        {
-            biomeFields[i] = new Field[cols];
-
-            for (int j = 0; j < cols; j++)
-            {
-                bool isVoid = rand.NextDouble() < voidProbability;
-                biomeFields[i][j] = CreateField(i, j, offsetX, offsetY, isVoid);
-            }
+            return MurkyCoreCluster();
         }
-
-        return biomeFields;
+        else if (dangerLevel > 40 && dangerLevel < 61)
+        {
+            return MurkyCircularTrapZone();
+        }
+        else if (dangerLevel > 60 && dangerLevel < 71)
+        {
+            return MurkyRandomHazardPattern();
+        }
+        else if (dangerLevel > 70 && dangerLevel < 86)
+        {
+            return MurkyLinearDangerField();
+        }
+        else if (dangerLevel > 85 && dangerLevel < 96)
+        {
+            return MurkyCrescentTrap();
+        }
+        else
+        {
+            return MurkyOverwhelmedZone();
+        }
     }
 
-    private Field CreateField(int i, int j, float offsetX, float offsetY, bool isVoid)
+    private Field CreateField(int i, int j, float offsetX, float offsetY, bool isWater)
     {
         int fieldType;
 
-        if (isVoid)
+        if (isWater)
         {
-            fieldType = 5;
+            fieldType = 2;
         }
         else
         {
             fieldType = rand.Next(0, 6);
-            if (fieldType == 5)
+            if (fieldType == 2)
                 fieldType = 0;
         }
 
@@ -76,8 +76,8 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
             1 => fieldObj.AddComponent<Rock>(),
             2 => fieldObj.AddComponent<Water>(),
             3 => fieldObj.AddComponent<Cactus>(),
-            4 => fieldObj.AddComponent<EmptyField>(),
-            5 => fieldObj.AddComponent<QuickSand>(),
+            4 => fieldObj.AddComponent<QuickSand>(),
+            5 => fieldObj.AddComponent<EmptyField>(),
             _ => fieldObj.AddComponent<BaseTerrain>(),
         };
 
@@ -87,8 +87,8 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
             1 => "rock",
             2 => "water",
             3 => "cactus",
-            4 => "emptyField",
-            5 => "quickSand",
+            4 => "quickSand",
+            5 => "emptyField",
             _ => "baseTerrain"
         };
 
@@ -102,7 +102,181 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
         return field;
     }
 
-    //implement later
+    public Field[][] MurkyCircularTrapZone()
+    {
+        Field[][] fields = new Field[rows][];
+
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        float centerRow = rows / 2f;
+        float centerCol = cols / 2f;
+        float radius = Math.Min(rows, cols) / 3f;
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] line = new Field[cols];
+
+            for (int j = 0; j < cols; ++j)
+            {
+                float dist = MathF.Sqrt((i - centerRow) * (i - centerRow) + (j - centerCol) * (j - centerCol));
+
+                bool isWater = dist <= radius;
+
+                line[j] = CreateField(i, j, offsetX, offsetY, isWater);
+            }
+
+            fields[i] = line;
+        }
+
+        return fields;
+    }
+
+    public Field[][] MurkyCrescentTrap()
+    {
+        Field[][] map = new Field[rows][];
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        int voidStartIndex = (int)Math.Floor((decimal)(cols / 2));
+        int voidEndIndex = (int)Math.Ceiling((decimal)(cols / 2));
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] line = new Field[cols];
+            for (int j = 0; j < cols; ++j)
+            {
+                bool isWater = j == voidStartIndex || j == voidEndIndex;
+                line[j] = CreateField(i, j, offsetX, offsetY, isWater);
+            }
+
+            --voidStartIndex;
+            ++voidEndIndex;
+            map[i] = line;
+        }
+
+        return map;
+    }
+
+    public Field[][] MurkyLinearDangerField()
+    {
+        Field[][] map = new Field[rows][];
+        int voidStartIndex;
+        int voidEndIndex;
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        if (rows % 2 == 0)
+        {
+            voidStartIndex = (int)Math.Floor((decimal)(cols / 2));
+            voidEndIndex = (int)Math.Ceiling((decimal)(cols / 2));
+
+            for (int i = 0; i < rows; ++i)
+            {
+                Field[] line = new Field[cols];
+                for (int j = 0; j < cols; ++j)
+                {
+                    bool isWater = j >= voidStartIndex && j <= voidEndIndex;
+                    line[j] = CreateField(i, j, offsetX, offsetY, isWater);
+                }
+                --voidStartIndex;
+                ++voidEndIndex;
+                map[i] = line;
+            }
+        }
+        else
+        {
+            voidStartIndex = (int)Math.Floor((decimal)(cols / 2));
+            voidEndIndex = voidStartIndex;
+
+            for (int i = 0; i < rows; ++i)
+            {
+                Field[] line = new Field[cols];
+                for (int j = 0; j < cols; ++j)
+                {
+                    bool isWater = j >= voidStartIndex && j <= voidEndIndex;
+                    line[j] = CreateField(i, j, offsetX, offsetY, isWater);
+                }
+                --voidStartIndex;
+                ++voidEndIndex;
+                map[i] = line;
+            }
+        }
+
+        return map;
+    }
+
+    public Field[][] MurkyOverwhelmedZone()
+    {
+        Field[][] map = new Field[rows][];
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] fields = new Field[cols];
+            for (int j = 0; j < cols; ++j)
+            {
+                fields[j] = CreateField(i, j, offsetX, offsetY, true);
+            }
+            map[i] = fields;
+        }
+
+        return map;
+    }
+
+    public Field[][] MurkyCoreCluster()
+    {
+        Field[][] map = new Field[rows][];
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+
+        int voidRow = rand.Next(1, rows - 1);
+        int voidCol = rand.Next(1, cols - 1);
+
+        for (int i = 0; i < rows; ++i)
+        {
+            Field[] fields = new Field[cols];
+            for (int j = 0; j < cols; ++j)
+            {
+                bool isWater =
+                    Math.Abs(i - voidRow) <= 1 &&
+                    Math.Abs(j - voidCol) <= 1;
+
+                fields[j] = CreateField(i, j, offsetX, offsetY, isWater);
+            }
+            map[i] = fields;
+        }
+
+        return map;
+    }
+
+    public Field[][] MurkyRandomHazardPattern()
+    {
+        float voidProbability = dangerLevel switch
+        {
+            3 => 1f,
+            2 => 0.5f,
+            1 => 0.25f,
+            _ => 0f
+        };
+
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+        Field[][] biomeFields = new Field[rows][];
+        for (int i = 0; i < rows; i++)
+        {
+            biomeFields[i] = new Field[cols];
+
+            for (int j = 0; j < cols; j++)
+            {
+                bool isWater = rand.NextDouble() < voidProbability;
+                biomeFields[i][j] = CreateField(i, j, offsetX, offsetY, isWater);
+            }
+        }
+        return biomeFields;
+    }
+
     public bool ValidateStructure(Field[][] structure)
     {
         return true;
