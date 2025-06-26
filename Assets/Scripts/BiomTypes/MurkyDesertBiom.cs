@@ -22,7 +22,7 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
 
     public Field[][] GenerateBiom()
     {
-        if (dangerLevel > 0 && dangerLevel < 100)
+        if (dangerLevel > 0 && dangerLevel < 41)
         {
             return MurkyCoreCluster();
         }
@@ -231,8 +231,9 @@ public class MurkyDesertBiom : Biom, IBiomGenerator
         float offsetX = (cols * tileSize) / 2f;
         float offsetY = (rows * tileSize) / 2f;
 
-        int voidRow = rand.Next(1, rows - 1);
-        int voidCol = rand.Next(1, cols - 1);
+        int voidRow = rand.Next(Math.Min(1, rows - 1), Math.Max(2, rows - 1));
+        int voidCol = rand.Next(Math.Min(1, cols - 1), Math.Max(2, cols - 1));
+
 
         for (int i = 0; i < rows; ++i)
         {
