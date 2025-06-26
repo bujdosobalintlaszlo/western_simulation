@@ -40,7 +40,7 @@ public class CactusFieldBiom : Biom,IBiomGenerator
         }
         else
         {
-            if (UnityEngine.Random.value < 0.01f)
+            if (UnityEngine.Random.value < 0.001f)
                 return FullCactusField();
             else
                 return HalfCircleCactusField();
