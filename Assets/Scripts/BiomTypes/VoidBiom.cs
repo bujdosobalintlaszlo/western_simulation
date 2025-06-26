@@ -151,7 +151,7 @@ public class VoidBiom : IBiomGenerator
         return fields;
     }
 
-    public Field[] HalfCircleVoid() {
+    public Field[][] HalfCircleVoid() {
         if (rows % 2 == 0)
         {
 
