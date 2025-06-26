@@ -24,27 +24,27 @@ public class PondBiom : Biom, IBiomGenerator
     {
         if (slumpLevel > 0 && slumpLevel < 100)
         {
-            return MiniW();
+            return MiniPond();
         }
         else if (slumpLevel > 40 && slumpLevel < 61)
         {
-            return CircularW();
+            return CircularPond();
         }
         else if (slumpLevel > 60 && slumpLevel < 71)
         {
-            return RandomW();
+            return RandomPond();
         }
         else if (slumpLevel > 70 && slumpLevel < 86)
         {
-            return RectengularW();
+            return RectengularPond();
         }
         else if (slumpLevel > 85 && slumpLevel < 96)
         {
-            return HalfCircleW();
+            return HalfCirclePond();
         }
         else
         {
-            return FullW();
+            return FullPond();
         }
     }
 
@@ -54,12 +54,12 @@ public class PondBiom : Biom, IBiomGenerator
 
         if (isWater)
         {
-            fieldType = 5;
+            fieldType = 2;
         }
         else
         {
             fieldType = rand.Next(0, 6);
-            if (fieldType == 5)
+            if (fieldType == 2)
                 fieldType = 0;
         }
 
@@ -103,7 +103,7 @@ public class PondBiom : Biom, IBiomGenerator
     }
 
 
-    public Field[][] CircularW()
+    public Field[][] CircularPond()
     {
         Field[][] fields = new Field[rows][];
 
@@ -133,7 +133,7 @@ public class PondBiom : Biom, IBiomGenerator
         return fields;
     }
 
-    public Field[][] HalfCircleW()
+    public Field[][] HalfCirclePond()
     {
         Field[][] map = new Field[rows][];
         float offsetX = (cols * tileSize) / 2f;
@@ -160,7 +160,7 @@ public class PondBiom : Biom, IBiomGenerator
     }
 
 
-    public Field[][] RectengularW()
+    public Field[][] RectengularPond()
     {
         Field[][] map = new Field[rows][];
         int voidStartIndex;
@@ -209,23 +209,26 @@ public class PondBiom : Biom, IBiomGenerator
     }
 
 
-    public Field[][] FullW()
+    public Field[][] FullPond()
     {
         Field[][] map = new Field[rows][];
         float offsetX = (cols * tileSize) / 2f;
         float offsetY = (rows * tileSize) / 2f;
+
         for (int i = 0; i < rows; ++i)
         {
             Field[] fields = new Field[cols];
-            for (int j = 0; ++j < cols; ++j)
+            for (int j = 0; j < cols; ++j)
             {
                 fields[j] = CreateField(i, j, offsetX, offsetY, true);
             }
+            map[i] = fields;
         }
+
         return map;
     }
 
-    public Field[][] MiniW()
+    public Field[][] MiniPond()
     {
         Field[][] map = new Field[rows][];
         float offsetX = (cols * tileSize) / 2f;
@@ -251,7 +254,7 @@ public class PondBiom : Biom, IBiomGenerator
         return map;
     }
 
-    public Field[][] RandomW()
+    public Field[][] RandomPond()
     {
         float voidProbability = slumpLevel switch
         {
@@ -276,7 +279,6 @@ public class PondBiom : Biom, IBiomGenerator
         }
         return biomeFields;
     }
-
     //implement later
     public bool ValidateStructure(Field[][] structure)
     {
