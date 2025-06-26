@@ -162,11 +162,21 @@ public class VoidBiom : IBiomGenerator
     }
 
     public Field[][] RectengularVoid() { 
-    
+        
     }
 
-    public Field[][] FullVoid() { 
-    
+    public Field[][] FullVoid()
+    {
+        Field[][] map = new Field[rows][];
+        float offsetX = (cols * tileSize) / 2f;
+        float offsetY = (rows * tileSize) / 2f;
+        for (int i = 0; i < rows; ++i) {
+            Field[] fields = new Field[cols];
+            for (int j = 0; ++j < cols; ++j) {
+                fields[j] = CreateField(i,j,offsetX,offsetY,true);
+            }
+        }
+        return map;
     }
 
 
