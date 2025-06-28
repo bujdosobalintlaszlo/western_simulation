@@ -30,11 +30,11 @@ public class CactusFieldBiom : Biom,IBiomGenerator
         {
             return CircularCactusField();
         }
-        else if (spikeLevel > 60 && spikeLevel < 71)
+        else if (spikeLevel > 60 && spikeLevel < 80)
         {
             return RandomCactusField();
         }
-        else if (spikeLevel > 70 && spikeLevel < 86)
+        else if (spikeLevel > 80 && spikeLevel < 86)
         {
             return RectengularCactusField();
         }
